@@ -78,6 +78,13 @@
                     <h1 class="hero-title">Hello, Sirr!! I'm<br><span class="gradient-text">Rifki Maulana</span></h1>
                     <p class="hero-subtitle">{{ t.heroSubtitle }}</p>
                     <p class="hero-description">{{ t.heroDescription }}</p>
+                    <!-- Mobile CTA Buttons - Show on mobile only -->
+                    <div class="hero-mobile-buttons">
+                        <a href="#projects" @click="scrollToSection('#projects')" class="btn btn-primary btn-mobile">{{ t.btnViewWork }}</a>
+                        <a href="assets/CV Aku.pdf" download class="btn btn-secondary btn-mobile">
+                            <i class="fas fa-download"></i> {{ t.btnDownloadCV }}
+                        </a>
+                    </div>
                     <div class="social-links">
                         <a href="https://wa.me/6285966772197" target="_blank" @mouseenter="playSFX('hover')" class="social-link">
                             <i class="fab fa-whatsapp"></i>

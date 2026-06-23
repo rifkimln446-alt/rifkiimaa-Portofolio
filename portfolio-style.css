@@ -49,57 +49,6 @@ body {
 
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-/* ============ Header Navigation ============ */
-.header-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  padding: 12px 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.header-buttons {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.4rem;
-  padding-right: 55px;
-  
-}
-
-/* Vue Transition: Slide-Fade Animation */
-.slide-fade-enter-active {
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.slide-fade-leave-active {
-  transition: all 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
-}
-
-.slide-fade-enter-from {
-  transform: translateY(20px);
-  opacity: 0;
-}
-
-.slide-fade-leave-to {
-  transform: translateY(-30px);
-  opacity: 0;
-}
-
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  border-radius: 8px;
-  font-weight: 500;
-  min-height: auto;
-}
-
 /* ============ Audio Controls ============ */
 .audio-control {
   position: fixed;
@@ -1009,30 +958,6 @@ body {
 
 /* ============ Responsive Design ============ */
 @media (max-width: 768px) {
-  /* Header - Match Audio Control Size */
-  .header-nav {
-    padding: 10px 15px;
-  }
-  
-  .header-buttons {
-    padding-right: 60px;
-    gap: 0.5rem;
-  }
-  
-  .btn-sm {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.75rem;
-    min-height: 35px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .btn-sm i {
-    font-size: 0.8rem;
-  }
-  
   /* Hero Section - Mobile Layout */
   .split-screen-container {
     grid-template-columns: 1fr;

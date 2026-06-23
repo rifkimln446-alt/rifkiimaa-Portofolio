@@ -70,6 +70,7 @@ body {
   justify-content: flex-end;
   gap: 0.4rem;
   padding-right: 55px;
+  
 }
 
 /* Vue Transition: Slide-Fade Animation */
@@ -92,11 +93,11 @@ body {
 }
 
 .btn-sm {
-  padding: 0.3rem 0.6rem;
-  font-size: 0.7rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
   border-radius: 8px;
   font-weight: 500;
-}
+  min-height: auto;
 
 /* ============ Audio Controls ============ */
 .audio-control {
@@ -1008,21 +1009,22 @@ body {
   }
   
   .header-buttons {
-    padding-right: 70px;
-    gap: 0.4rem;
+    padding-right: 60px;
+    gap: 0.5rem;
   }
   
   .btn-sm {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.6rem;
-    min-height: 40px;
-    display: flex;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    min-height: 35px;
+    border-radius: 8px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
   }
   
   .btn-sm i {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
   
   /* Hero Section - Mobile Layout */

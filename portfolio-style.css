@@ -410,6 +410,11 @@ body {
   flex-wrap: wrap;
 }
 
+/* Mobile CTA Buttons - Hidden on Desktop */
+.hero-mobile-buttons {
+  display: none;
+}
+
 .btn {
   padding: 1rem 2rem;
   border-radius: 50px;
@@ -1065,6 +1070,23 @@ body {
   
   .hero-description {
     font-size: 0.9rem;
+  }
+  
+  /* Mobile CTA Buttons - Show on Mobile */
+  .hero-mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+  
+  .btn-mobile {
+    padding: 0.9rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    width: 100%;
+    justify-content: center;
   }
   
   .social-links { 

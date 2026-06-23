@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Rifki - Industrial Engineering</title>
+    <link rel="stylesheet" href="portfolio-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <!-- Header Navigation -->
+        <header class="header-nav">
+            <transition name="slide-fade">
+                <div class="header-buttons" v-if="activeSection === 'home'">
+                    <a href="#projects" @click="scrollToSection('#projects')" class="btn btn-primary btn-sm">{{ t.btnViewWork }}</a>
+                    <a href="assets/CV Aku.pdf" download class="btn btn-secondary btn-sm">
+                        <i class="fas fa-download"></i> {{ t.btnDownloadCV }}
+                    </a>
+                </div>
+            </transition>
+        </header>
+
+        <!-- Audio Controls -->
+        <div class="audio-control">
+            <button @click="toggleAudioMenu" class="audio-btn audio-main-toggle" :class="{active: audioMenuOpen}" title="Settings">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="audio-control-menu" :class="{active: audioMenuOpen}">
+                <button @click="toggleMusic" class="audio-btn" :class="{active: musicEnabled}" title="Toggle Music">
+                    <i class="fas fa-music"></i>
+                </button>
+                <button @click="toggleSFX" class="audio-btn" :class="{active: sfxEnabled}" title="Toggle SFX">
+                    <i class="fas fa-volume-high"></i>
+                </button>
+                <button @click="toggleLanguage" class="audio-btn" title="Change Language">
+                    <span>🌐 {{ currentLang.toUpperCase() }}</span>
+                </button>
+            </div>
+        </div>
+        <audio ref="backgroundMusic" loop><source src="Backsound.mp3" type="audio/mpeg"></audio>
+
+        <!-- Floating Dock Navigation -->
+        <nav class="floating-dock">
+            <a href="#home" @click.prevent="setActiveSection('home')" class="dock-item" :class="{active: activeSection === 'home'}">
+                <i class="fas fa-home"></i>
+                <span>{{ t.navHome }}</span>
+            </a>
+            <a href="#about" @click.prevent="setActiveSection('about')" class="dock-item" :class="{active: activeSection === 'about'}">
+                <i class="far fa-user"></i>
+                <span>{{ t.navAbout }}</span>
+            </a>
+            <a href="#skills" @click.prevent="setActiveSection('skills')" class="dock-item" :class="{active: activeSection === 'skills'}">
+                <i class="fas fa-bolt"></i>
+                <span>{{ t.navSkills }}</span>
+            </a>
+            <a href="#projects" @click.prevent="setActiveSection('projects')" class="dock-item" :class="{active: activeSection === 'projects'}">
+                <i class="fas fa-briefcase"></i>
+                <span>{{ t.navProjects }}</span>
+            </a>
+            <a href="#contact" @click.prevent="setActiveSection('contact')" class="dock-item" :class="{active: activeSection === 'contact'}">
+                <i class="far fa-envelope"></i>
+                <span>{{ t.navContact }}</span>
+            </a>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-bg">
+                <div class="gradient-orb orb-1" :style="orbStyles[0]"></div>
+                <div class="gradient-orb orb-2" :style="orbStyles[1]"></div>
+                <div class="gradient-orb orb-3" :style="orbStyles[2]"></div>
+            </div>
+            <div class="split-screen-container">
+                <div class="left-column">
+                    <h1 class="hero-title">Hello, Sirr!! I'm<br><span class="gradient-text">Rifki Maulana</span></h1>
+                    <p class="hero-subtitle">{{ t.heroSubtitle }}</p>
+                    <p class="hero-description">{{ t.heroDescription }}</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/6285966772197" target="_blank" @mouseenter="playSFX('hover')" class="social-link">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/rifki-maulana-57378532a" target="_blank" @mouseenter="playSFX('hover')" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://www.instagram.com/rifkiimaa" target="_blank" @mouseenter="playSFX('hover')" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <img src="Oke1.png" alt="Rifki Maulana" class="hero-model">
+                </div>
+            </div>
+            <div class="scroll-indicator"><span></span></div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-header collapsible-header" :class="{collapsed: collapsedSections.about}" @click="toggleSection('about')">
+                    <div class="header-content">
+                        <h2 class="section-title">{{ t.aboutTitle }}</h2>
+                        <p class="section-subtitle">{{ t.aboutSubtitle }}</p>
+                    </div>
+                    <button class="collapse-toggle" aria-label="Toggle section">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapsible-content" :class="{collapsed: collapsedSections.about}">
+                    <div class="about-content">
+                        <div class="about-image">
+                            <div class="about-img-wrapper">
+                                <img src="Oke2.png" alt="About Rifki">
+                                <div class="about-img-bg"></div>
+                            </div>
+                        </div>
+                        <div class="about-text">
+                            <h3>{{ t.aboutHeading }}</h3>
+                            <p>{{ t.aboutText1 }}</p>
+                            <p>{{ t.aboutText2 }}</p>
+                            <div class="about-stats">
+                                <div class="stat-item"><h4>2+</h4><p>{{ t.statYears }}</p></div>
+                                <div class="stat-item"><h4>20+</h4><p>{{ t.statProjects }}</p></div>
+                                <div class="stat-item"><h4>30+</h4><p>{{ t.statClients }}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <div class="section-header collapsible-header" :class="{collapsed: collapsedSections.skills}" @click="toggleSection('skills')">
+                    <div class="header-content">
+                        <h2 class="section-title">{{ t.skillsTitle }}</h2>
+                        <p class="section-subtitle">{{ t.skillsSubtitle }}</p>
+                    </div>
+                    <button class="collapse-toggle" aria-label="Toggle section">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapsible-content" :class="{collapsed: collapsedSections.skills}">
+                    <div class="skills-grid">
+                        <div v-for="skill in skills" :key="skill.name" class="skill-card">
+                            <div class="skill-icon"><i :class="skill.icon"></i></div>
+                            <h3>{{ skill.name }}</h3>
+                            <div class="skill-bar">
+                                <div class="skill-progress" :style="{width: skill.visible ? skill.progress + '%' : '0%'}">
+                                    <span class="skill-percentage" v-if="skill.visible">{{ skill.progress }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <div class="section-header collapsible-header" :class="{collapsed: collapsedSections.projects}" @click="toggleSection('projects')">
+                    <div class="header-content">
+                        <h2 class="section-title">{{ t.projectsTitle }}</h2>
+                        <p class="section-subtitle">{{ t.projectsSubtitle }}</p>
+                    </div>
+                    <button class="collapse-toggle" aria-label="Toggle section">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapsible-content" :class="{collapsed: collapsedSections.projects}">
+                    <div class="projects-grid">
+                        <div v-for="project in projects" :key="project.id" class="project-card">
+                            <div class="project-image">
+                                <img :src="project.image" :alt="project.title">
+                                <div class="project-overlay">
+                                    <a href="#" @click.prevent="playSFX('click')" class="project-link">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>{{ currentLang === 'id' ? project.titleId : project.titleEn }}</h3>
+                                <p>{{ currentLang === 'id' ? project.descId : project.descEn }}</p>
+                                <div class="project-tags">
+                                    <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">{{ t.contactTitle }}</h2>
+                    <p class="section-subtitle">{{ t.contactSubtitle }}</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>{{ t.contactHeading }}</h3>
+                        <p>{{ t.contactText }}</p>
+                        <div class="contact-items">
+                            <div class="contact-item"><i class="fas fa-envelope"></i><span>rifkimln446@gmail.com</span></div>
+                            <div class="contact-item"><i class="fas fa-phone"></i><span>+62 859-6677-2197</span></div>
+                            <div class="contact-item"><i class="fas fa-location-dot"></i><span>Jl. Siprus Raya No. 26 Regency, Cikampek Utara, Kotabaru, Karawang, West Java, Indonesia</span></div>
+                        </div>
+                    </div>
+                    <form class="contact-form" @submit.prevent="handleFormSubmit">
+                        <div class="form-group">
+                            <input v-model="formData.name" type="text" :placeholder="t.formName" required>
+                        </div>
+                        <div class="form-group">
+                            <input v-model="formData.email" type="email" :placeholder="t.formEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea v-model="formData.message" :placeholder="t.formMessage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{{ t.btnSend }}</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container"><p>{{ t.footerText }}</p></div>
+        </footer>
+
+        <!-- Notification -->
+        <div v-if="notification.show" class="notification" :class="notification.type">
+            {{ notification.message }}
+        </div>
+    </div>
+
+    <style>
+    [v-cloak] { display: none; }
+    .notification {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        font-weight: 600;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .skill-percentage {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .skill-progress {
+        position: relative;
+    }
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .contact-item i {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2px;
+    }
+    .contact-item span {
+        flex: 1;
+        word-break: break-word;
+        line-height: 1.6;
+    }
+    </style>
+
+    <script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            currentLang: localStorage.getItem('language') || 'id',
+            translations: {
+                id: {
+                    navHome: 'Beranda', navAbout: 'Tentang', navSkills: 'Keahlian',
+                    navProjects: 'Proyek', navContact: 'Kontak',
+                    heroSubtitle: 'Industrial Engineering Fresh Graduate',
+                    heroDescription: 'Warehouse & Supply Chain Analyst, Data Analyst (khususnya inventory & demand planning), PPIC (Production Planning & Inventory Control), & HR/Talent Management (basic, sesuai minat)',
+                    btnViewWork: 'Lihat Karya Saya', btnDownloadCV: 'Unduh CV',
+                    aboutTitle: 'Tentang Saya', aboutSubtitle: 'Kenali saya lebih dekat',
+                    aboutHeading: 'Halo! Saya Rifki Maulana',
+                    aboutText1: 'Hi, Saya Rifki Maulana—lulusan Teknik Industri yang passionate tentang menyelesaikan masalah dunia nyata melalui data, systems thinking, dan continuous improvement. Pengalaman saya mencakup manufaktur, optimasi gudang, eksekusi proyek, dan desain teknik, di mana saya telah berkontribusi pada perbaikan proses, perencanaan operasional, dan pengambilan keputusan berbasis data.',
+                    aboutText2: 'Selain keahlian teknis, saya menghargai kepemimpinan, kolaborasi, dan pembelajaran seumur hidup. Saya bercita-cita membangun karir internasional di bidang operasi, manajemen proyek, dan pengembangan organisasi sambil terus menciptakan solusi yang memberikan dampak berkelanjutan.',
+                    statYears: 'Tahun Pengalaman', statProjects: 'Proyek Selesai', statClients: 'Klien Puas',
+                    skillsTitle: 'Keahlian & Teknologi', skillsSubtitle: 'Tool yang saya gunakan',
+                    projectsTitle: 'Proyek Unggulan', projectsSubtitle: 'Beberapa karya terbaru saya',
+                    contactTitle: 'Mari Bekerja Sama', contactSubtitle: 'Hubungi saya',
+                    contactHeading: 'Informasi Kontak',
+                    contactText: 'Jangan ragu untuk menghubungi! Saya selalu terbuka untuk mendiskusikan proyek baru, ide kreatif, atau peluang.',
+                    formName: 'Nama Anda', formEmail: 'Email Anda', formMessage: 'Pesan Anda',
+                    btnSend: 'Kirim Pesan', footerText: '© 2026 Rifki. Hak cipta dilindungi.',
+                    notifSuccess: 'Pesan berhasil terkirim! 🎉'
+                },
+                en: {
+                    navHome: 'Home', navAbout: 'About', navSkills: 'Skills',
+                    navProjects: 'Projects', navContact: 'Contact',
+                    heroSubtitle: 'Industrial Engineering Fresh Graduate',
+                    heroDescription: 'Warehouse & Supply Chain Analyst, Data Analyst (especially inventory & demand planning), PPIC (Production Planning & Inventory Control), & HR/Talent Management (basic, according to interest)',
+                    btnViewWork: 'View My Work', btnDownloadCV: 'Download CV',
+                    aboutTitle: 'About Me', aboutSubtitle: 'Get to know me better',
+                    aboutHeading: 'Hello! I\'m Rifki Maulana',
+                    aboutText1: 'Hi, I\'m Rifki Maulana—an Industrial Engineering graduate passionate about solving real-world problems through data, systems thinking, and continuous improvement. My experience spans manufacturing, warehouse optimization, project execution, and engineering design, where I have contributed to process improvements, operational planning, and data-driven decision making.',
+                    aboutText2: 'Beyond technical expertise, I value leadership, collaboration, and lifelong learning. I aspire to build an international career in operations, project management, and organizational development while continuously creating solutions that deliver sustainable impact.',
+                    statYears: 'Years Experience', statProjects: 'Projects Completed', statClients: 'Happy Clients',
+                    skillsTitle: 'Skills & Technologies', skillsSubtitle: 'Tools I work with',
+                    projectsTitle: 'Featured Projects', projectsSubtitle: 'Some of my recent work',
+                    contactTitle: 'Let\'s Work Together', contactSubtitle: 'Get in touch with me',
+                    contactHeading: 'Contact Information',
+                    contactText: 'Feel free to reach out! I\'m always open to discussing new projects, creative ideas, or opportunities.',
+                    formName: 'Your Name', formEmail: 'Your Email', formMessage: 'Your Message',
+                    btnSend: 'Send Message', footerText: '© 2026 Rifki. All rights reserved.',
+                    notifSuccess: 'Message sent successfully! 🎉'
+                }
+            },
+            musicEnabled: false, sfxEnabled: true, audioMenuOpen: false,
+            isScrolled: false, mobileMenuOpen: false,
+            activeSection: 'home',
+            collapsedSections: {
+                about: localStorage.getItem('section-about-collapsed') === 'true',
+                skills: localStorage.getItem('section-skills-collapsed') === 'true',
+                projects: localStorage.getItem('section-projects-collapsed') === 'true'
+            },
+            skills: [
+                { name: 'SkethcUp, AutoCAD', icon: 'fas fa-drafting-compass', progress: 95, visible: false },
+                { name: 'Data Analyst (Supply Chain)', icon: 'fas fa-chart-line', progress: 90, visible: false },
+                { name: 'Microsoft Office', icon: 'fas fa-file-word', progress: 88, visible: false },
+                { name: 'Plant Simulation', icon: 'fas fa-industry', progress: 85, visible: false },
+                { name: 'Design Grafis | Canva, A. Illustrator, etc', icon: 'fas fa-palette', progress: 82, visible: false },
+                { name: 'English', icon: 'fas fa-language', progress: 87, visible: false },
+                { name: 'K3 (Kesehatan & Keselamatan Kerja)', icon: 'fas fa-hard-hat', progress: 95, visible: false },
+                { name: 'Power Bi', icon: 'fab fa-PowerBi', progress: 90, visible: false }
+            ],
+            projects: [
+                { id: 1, image: 'https://www.sketchupbox.com/images/2025/06/sketchupbox-23102326656.webp',
+                  titleEn: 'Drafters', titleId: 'Platform Drafter',
+                  descEn: 'Create a greenhouse design starting from the reservoir room, sterile room, to calculating teh RAB',
+                  descId: 'Buat desain rumah kaca mulai dari ruang reservoir, ruang steril, hingga menghitung RAB.',
+                  tags: ['SketchUp', 'AutoCAD', 'Plant Simulation'] },
+                { id: 2, image: 'https://miro.medium.com/v2/resize:fit:1200/1*0z09M2ZuIrX2aZxlmMoIkg.png',
+                  titleEn: 'Data Analyst', titleId: 'Data Analisis',
+                  descEn: 'Real-time data visualization dashboard with software Power Bi',
+                  descId: 'Dashboard visualisasi data real-time dengan analitik canggih',
+                  tags: ['M. Office', 'PowerBi', 'M. Excel', 'Minitab', 'Power Point'] },
+                { id: 3, image: 'https://gitkreatif.com/blog/wp-content/uploads/2023/05/graphic-designer-software-modern-design-web-page-commercial-ads-3-1-800x430.jpg',
+                  titleEn: 'Design Graphic App', titleId: 'Aplikasi Desain Grafis',
+                  descEn: 'I have worked on assignments to prepare presentations for information system needs.',
+                  descId: 'Saya telah mengerjakan tugas-tugas untuk menyiapkan presentasi terkait kebutuhan sistem informasi.',
+                  tags: ['Canva', 'A. Illustrator', 'Figma'] },
+                { id: 4, image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+                  titleEn: 'Project Management', titleId: 'Manajemen Proyek',
+                  descEn: 'Comprehensive project planning and execution system with timeline tracking',
+                  descId: 'Sistem perencanaan dan eksekusi proyek lengkap dengan pelacakan timeline',
+                  tags: ['Planning', 'Scheduling', 'Reporting'] },
+                { id: 5, image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+                  titleEn: 'Supply Chain Analytics', titleId: 'Analitik Supply Chain',
+                  descEn: 'Advanced analytics for supply chain optimization and inventory management',
+                  descId: 'Analitik canggih untuk optimasi supply chain dan manajemen inventori',
+                  tags: ['Supply Chain', 'Analytics', 'Optimization'] },
+                { id: 6, image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800',
+                  titleEn: 'Process Improvement', titleId: 'Perbaikan Proses',
+                  descEn: 'Lean six sigma methodology implementation for process optimization',
+                  descId: 'Implementasi metodologi lean six sigma untuk optimasi proses',
+                  tags: ['Lean', 'Six Sigma', 'Kaizen'] }
+            ],
+            formData: { name: '', email: '', message: '' },
+            notification: { show: false, message: '', type: 'success' },
+            orbStyles: [{ transform: 'translateY(0px)' }, { transform: 'translateY(0px)' }, { transform: 'translateY(0px)' }],
+            scrollOffset: 0
+        };
+    },
+    computed: {
+        t() { return this.translations[this.currentLang]; }
+    },
+    methods: {
+        toggleAudioMenu(e) {
+            e.stopPropagation();
+            this.audioMenuOpen = !this.audioMenuOpen;
+            this.playSFX('click');
+        },
+        toggleMusic() {
+            const music = this.$refs.backgroundMusic;
+            if (this.musicEnabled) {
+                music.pause();
+            } else {
+                music.play().catch(e => console.log('Audio play failed:', e));
+            }
+            this.musicEnabled = !this.musicEnabled;
+            this.playSFX('click');
+        },
+        toggleSFX() {
+            this.sfxEnabled = !this.sfxEnabled;
+            this.playSFX('click');
+        },
+        playSFX(type) {
+            if (!this.sfxEnabled) return;
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                const configs = {
+                    click: { freq: 800, gain: 0.1, duration: 0.1 },
+                    hover: { freq: 600, gain: 0.05, duration: 0.05 },
+                    success: { freq: 1000, gain: 0.15, duration: 0.2 }
+                };
+                const config = configs[type] || configs.click;
+                oscillator.frequency.value = config.freq;
+                gainNode.gain.setValueAtTime(config.gain, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + config.duration);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + config.duration);
+            } catch(e) {}
+        },
+        toggleLanguage() {
+            this.currentLang = this.currentLang === 'id' ? 'en' : 'id';
+            localStorage.setItem('language', this.currentLang);
+            this.playSFX('click');
+        },
+        toggleMobileMenu() {
+            this.mobileMenuOpen = !this.mobileMenuOpen;
+            this.playSFX('click');
+        },
+        scrollToSection(selector) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                this.mobileMenuOpen = false;
+                this.playSFX('click');
+            }
+        },
+        setActiveSection(section) {
+            this.activeSection = section;
+            this.scrollToSection(`#${section}`);
+            this.playSFX('click');
+        },
+        handleScroll() {
+            this.isScrolled = window.scrollY > 50;
+            this.scrollOffset = window.pageYOffset;
+            this.orbStyles = [
+                { transform: `translateY(${this.scrollOffset * 0.1}px)` },
+                { transform: `translateY(${this.scrollOffset * 0.2}px)` },
+                { transform: `translateY(${this.scrollOffset * 0.3}px)` }
+            ];
+            
+            // Auto-update active section based on scroll position
+            const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+            const scrollPosition = window.scrollY + 200;
+            
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const offsetTop = element.offsetTop;
+                    const offsetBottom = offsetTop + element.offsetHeight;
+                    
+                    if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+                        this.activeSection = section;
+                        break;
+                    }
+                }
+            }
+        },
+
+        toggleSection(section) {
+            this.collapsedSections[section] = !this.collapsedSections[section];
+            localStorage.setItem(`section-${section}-collapsed`, this.collapsedSections[section]);
+            this.playSFX('click');
+        },
+        handleFormSubmit() {
+            this.notification = { show: true, message: this.t.notifSuccess, type: 'success' };
+            this.playSFX('success');
+            this.formData = { name: '', email: '', message: '' };
+            setTimeout(() => { this.notification.show = false; }, 3000);
+        },
+        createCursorTrail(e) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.cssText = `position: fixed; width: 5px; height: 5px;
+                background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%;
+                pointer-events: none; left: ${e.clientX}px; top: ${e.clientY}px;
+                z-index: 9998; opacity: 0.6; transform: translate(-50%, -50%);`;
+            document.body.appendChild(trail);
+            setTimeout(() => {
+                trail.style.transition = 'all 0.5s ease';
+                trail.style.opacity = '0';
+                trail.style.transform = 'translate(-50%, -50%) scale(2)';
+                setTimeout(() => trail.remove(), 500);
+            }, 10);
+        },
+        initAnimations() {
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            const sections = document.querySelectorAll('.skill-card, .project-card, .about-content, .contact-content');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(section);
+            });
+            const skillObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const skillCards = Array.from(document.querySelectorAll('.skill-card'));
+                        const idx = skillCards.indexOf(entry.target);
+                        if (idx !== -1) {
+                            setTimeout(() => { 
+                                if (this.skills[idx]) {
+                                    this.skills[idx].visible = true;
+                                }
+                            }, idx * 100);
+                        }
+                        skillObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            setTimeout(() => {
+                document.querySelectorAll('.skill-card').forEach(card => skillObserver.observe(card));
+            }, 100);
+        }
+    },
+    mounted() {
+        if (this.$refs.backgroundMusic) {
+            this.$refs.backgroundMusic.volume = 0.3;
+        }
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('mousemove', this.createCursorTrail);
+        document.addEventListener('click', (e) => {
+            if (this.audioMenuOpen && !e.target.closest('.audio-control')) {
+                this.audioMenuOpen = false;
+            }
+        });
+        this.initAnimations();
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+        console.log('🎨 Vue Portfolio loaded!');
+    },
+    unmounted() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('mousemove', this.createCursorTrail);
+    }
+}).mount('#app');
+    </script>
+</body>
+</html>

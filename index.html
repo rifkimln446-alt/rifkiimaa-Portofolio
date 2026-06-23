@@ -11,17 +11,6 @@
 </head>
 <body>
     <div id="app" v-cloak>
-        <!-- Header Navigation -->
-        <header class="header-nav">
-            <transition name="slide-fade">
-                <div class="header-buttons" v-if="activeSection === 'home'">
-                    <a href="#projects" @click="scrollToSection('#projects')" class="btn btn-primary btn-sm">{{ t.btnViewWork }}</a>
-                    <a href="assets/CV Aku.pdf" download class="btn btn-secondary btn-sm">
-                        <i class="fas fa-download"></i> {{ t.btnDownloadCV }}
-                    </a>
-                </div>
-            </transition>
-        </header>
 
         <!-- Audio Controls -->
         <div class="audio-control">

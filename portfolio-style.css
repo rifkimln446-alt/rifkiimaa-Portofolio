@@ -880,26 +880,30 @@ body {
 
 .contact-info h3 {
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0;
 }
 
 .contact-info p {
   color: var(--text-secondary);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   line-height: 1.8;
+  text-align: justify;
 }
 
 .contact-items {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  align-items: flex-start;
 }
 
 .contact-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   color: var(--text-secondary);
+  text-align: left;
 }
 
 .contact-item i {

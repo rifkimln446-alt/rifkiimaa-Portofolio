@@ -12,6 +12,21 @@
 <body>
     <div id="app" v-cloak>
 
+        <!-- iOS 26 Wallpaper Background with Parallax -->
+        <div class="ios-wallpaper" :style="wallpaperParallax">
+            <div class="wallpaper-overlay"></div>
+        </div>
+
+        <!-- iOS 26 Dynamic Clock Widget -->
+        <div class="ios-clock-widget">
+            <div class="clock-time">{{ currentTime }}</div>
+            <div class="clock-date">{{ currentDate }}</div>
+            <div class="clock-location">
+                <i class="fas fa-location-dot"></i>
+                {{ currentLocation }}
+            </div>
+        </div>
+
         <!-- Audio Controls -->
         <div class="audio-control">
             <button @click="toggleAudioMenu" class="audio-btn audio-main-toggle" :class="{active: audioMenuOpen}" title="Settings">
@@ -49,6 +64,10 @@
                 <i class="fas fa-briefcase"></i>
                 <span>{{ t.navProjects }}</span>
             </a>
+            <a href="#certificates" @click.prevent="setActiveSection('certificates')" class="dock-item" :class="{active: activeSection === 'certificates'}">
+                <i class="fas fa-certificate"></i>
+                <span>{{ t.navCertificates }}</span>
+            </a>
             <a href="#contact" @click.prevent="setActiveSection('contact')" class="dock-item" :class="{active: activeSection === 'contact'}">
                 <i class="far fa-envelope"></i>
                 <span>{{ t.navContact }}</span>
@@ -64,13 +83,13 @@
             </div>
             <div class="split-screen-container">
                 <div class="left-column">
-                    <h1 class="hero-title">Hello, Sirr!! I'm<br><span class="gradient-text">Rifki Maulana</span></h1>
+                    <h1 class="hero-title">Helloo! I'm<br><span class="gradient-text">Rifki Maulana</span></h1>
                     <p class="hero-subtitle">{{ t.heroSubtitle }}</p>
                     <p class="hero-description">{{ t.heroDescription }}</p>
                     <!-- Mobile CTA Buttons - Show on mobile only -->
                     <div class="hero-mobile-buttons">
                         <a href="#projects" @click="scrollToSection('#projects')" class="btn btn-primary btn-mobile">{{ t.btnViewWork }}</a>
-                        <a href="assets/CV Aku.pdf" download class="btn btn-secondary btn-mobile">
+                        <a href="CV_Rifki Maulana.pdf" download class="btn btn-secondary btn-mobile">
                             <i class="fas fa-download"></i> {{ t.btnDownloadCV }}
                         </a>
                     </div>
@@ -192,6 +211,39 @@
             </div>
         </section>
 
+        <!-- Certificates Section -->
+        <section id="certificates" class="certificates">
+            <div class="container">
+                <div class="section-header collapsible-header" :class="{collapsed: collapsedSections.certificates}" @click="toggleSection('certificates')">
+                    <div class="header-content">
+                        <h2 class="section-title">{{ t.certificatesTitle }}</h2>
+                        <p class="section-subtitle">{{ t.certificatesSubtitle }}</p>
+                    </div>
+                    <button class="collapse-toggle" aria-label="Toggle section">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapsible-content" :class="{collapsed: collapsedSections.certificates}">
+                    <div class="certificates-grid">
+                        <div v-for="cert in certificates" :key="cert.id" class="certificate-card" @click="openCertificate(cert)">
+                            <div class="certificate-image">
+                                <img :src="cert.thumbnail" :alt="cert.name" @contextmenu.prevent>
+                                <div class="certificate-overlay">
+                                    <i class="fas fa-eye"></i>
+                                    <span>{{ t.btnViewCert }}</span>
+                                </div>
+                            </div>
+                            <div class="certificate-info">
+                                <h3>{{ cert.name }}</h3>
+                                <p class="cert-issuer">{{ cert.issuer }}</p>
+                                <p class="cert-date">{{ cert.date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
         <section id="contact" class="contact">
             <div class="container">
@@ -233,6 +285,38 @@
         <!-- Notification -->
         <div v-if="notification.show" class="notification" :class="notification.type">
             {{ notification.message }}
+        </div>
+
+        <!-- Certificate Modal/Viewer -->
+        <div v-if="certificateModal.show" class="certificate-modal" @click="closeCertificate">
+            <div class="modal-overlay"></div>
+            <div class="modal-content" @click.stop>
+                <button class="modal-close" @click="closeCertificate">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="modal-header">
+                    <h3>{{ certificateModal.cert.name }}</h3>
+                    <p class="modal-issuer">{{ certificateModal.cert.issuer }}</p>
+                    <p class="modal-date">{{ certificateModal.cert.date }}</p>
+                </div>
+                <div class="modal-body">
+                    <img v-if="certificateModal.cert.type === 'image'" 
+                         :src="certificateModal.cert.fullImage" 
+                         :alt="certificateModal.cert.name"
+                         @contextmenu.prevent
+                         class="cert-full-image">
+                    <iframe v-if="certificateModal.cert.type === 'pdf'"
+                            :src="certificateModal.cert.pdfUrl"
+                            class="cert-pdf-viewer"
+                            @contextmenu.prevent></iframe>
+                </div>
+                <div class="modal-footer">
+                    <p class="no-download-notice">
+                        <i class="fas fa-info-circle"></i>
+                        {{ t.certViewOnlyNotice }}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -299,7 +383,7 @@ createApp({
             translations: {
                 id: {
                     navHome: 'Beranda', navAbout: 'Tentang', navSkills: 'Keahlian',
-                    navProjects: 'Proyek', navContact: 'Kontak',
+                    navProjects: 'Proyek', navCertificates: 'Sertifikat', navContact: 'Kontak',
                     heroSubtitle: 'Industrial Engineering Fresh Graduate',
                     heroDescription: 'Warehouse & Supply Chain Analyst, Data Analyst (khususnya inventory & demand planning), PPIC (Production Planning & Inventory Control), & HR/Talent Management (basic, sesuai minat)',
                     btnViewWork: 'Lihat Karya Saya', btnDownloadCV: 'Unduh CV',
@@ -310,6 +394,9 @@ createApp({
                     statYears: 'Tahun Pengalaman', statProjects: 'Proyek Selesai', statClients: 'Klien Puas',
                     skillsTitle: 'Keahlian & Teknologi', skillsSubtitle: 'Tool yang saya gunakan',
                     projectsTitle: 'Proyek Unggulan', projectsSubtitle: 'Beberapa karya terbaru saya',
+                    certificatesTitle: 'Sertifikasi', certificatesSubtitle: 'Sertifikat yang saya dapatkan',
+                    btnViewCert: 'Lihat Sertifikat',
+                    certViewOnlyNotice: 'Sertifikat hanya dapat dilihat, tidak dapat diunduh',
                     contactTitle: 'Mari Bekerja Sama', contactSubtitle: 'Hubungi saya',
                     contactHeading: 'Informasi Kontak',
                     contactText: 'Jangan ragu untuk menghubungi! Saya selalu terbuka untuk mendiskusikan proyek baru, ide kreatif, atau peluang.',
@@ -319,7 +406,7 @@ createApp({
                 },
                 en: {
                     navHome: 'Home', navAbout: 'About', navSkills: 'Skills',
-                    navProjects: 'Projects', navContact: 'Contact',
+                    navProjects: 'Projects', navCertificates: 'Certificates', navContact: 'Contact',
                     heroSubtitle: 'Industrial Engineering Fresh Graduate',
                     heroDescription: 'Warehouse & Supply Chain Analyst, Data Analyst (especially inventory & demand planning), PPIC (Production Planning & Inventory Control), & HR/Talent Management (basic, according to interest)',
                     btnViewWork: 'View My Work', btnDownloadCV: 'Download CV',
@@ -330,6 +417,9 @@ createApp({
                     statYears: 'Years Experience', statProjects: 'Projects Completed', statClients: 'Happy Clients',
                     skillsTitle: 'Skills & Technologies', skillsSubtitle: 'Tools I work with',
                     projectsTitle: 'Featured Projects', projectsSubtitle: 'Some of my recent work',
+                    certificatesTitle: 'Certifications', certificatesSubtitle: 'My certificates and achievements',
+                    btnViewCert: 'View Certificate',
+                    certViewOnlyNotice: 'Certificate is view-only and cannot be downloaded',
                     contactTitle: 'Let\'s Work Together', contactSubtitle: 'Get in touch with me',
                     contactHeading: 'Contact Information',
                     contactText: 'Feel free to reach out! I\'m always open to discussing new projects, creative ideas, or opportunities.',
@@ -344,8 +434,32 @@ createApp({
             collapsedSections: {
                 about: localStorage.getItem('section-about-collapsed') === 'true',
                 skills: localStorage.getItem('section-skills-collapsed') === 'true',
-                projects: localStorage.getItem('section-projects-collapsed') === 'true'
+                projects: localStorage.getItem('section-projects-collapsed') === 'true',
+                certificates: localStorage.getItem('section-certificates-collapsed') === 'true'
             },
+            certificateModal: {
+                show: false,
+                cert: { name: '', issuer: '', date: '', type: '', fullImage: '', pdfUrl: '' }
+            },
+            certificates: [
+                // CONTOH 1: PDF Lokal - Gunakan type 'pdf' dan pdfUrl
+                { id: 1, name: 'Sertifikat TOEFL SEP-T', issuer: 'SEP-T University', date: 'April 2026', 
+                  type: 'pdf',
+                  thumbnail: 'Sertifikat TOEFL.png', 
+                  pdfUrl: 'Sertifikat TOEFL.pdf' },
+                
+                // CONTOH 2: Gambar Online - Gunakan type 'image' dengan thumbnail dan fullImage
+                { id: 2, name: 'Sertifikat Himpunan', issuer: 'Himpunan Mahasiswa Teknik Industri', date: 'December 2024', 
+                  type: 'pdf', 
+                  thumbnail: 'Sertifikat Pengurus.png', 
+                  pdfUrl: 'Sertifikat Pengurus.pdf' },
+                
+                // CONTOH 3: Gambar Lokal - Gunakan type 'image' dengan path file lokal
+                { id: 3, name: 'Sertifikat Pengabdian Masyarakat', issuer: 'University Singaperbangsa Karawang', date: 'November 2022', 
+                  type: 'pdf', 
+                  thumbnail: 'Sertifikat PKM.png', 
+                  pdfUrl: 'Sertifikat PKM.pdf' }
+            ],
             skills: [
                 { name: 'SkethcUp, AutoCAD', icon: 'fas fa-drafting-compass', progress: 95, visible: false },
                 { name: 'Data Analyst (Supply Chain)', icon: 'fas fa-chart-line', progress: 90, visible: false },
@@ -391,7 +505,14 @@ createApp({
             formData: { name: '', email: '', message: '' },
             notification: { show: false, message: '', type: 'success' },
             orbStyles: [{ transform: 'translateY(0px)' }, { transform: 'translateY(0px)' }, { transform: 'translateY(0px)' }],
-            scrollOffset: 0
+            scrollOffset: 0,
+            // iOS 26 Dynamic Features
+            currentTime: '',
+            currentDate: '',
+            currentLocation: 'Karawang, West Java',
+            parallaxX: 0,
+            parallaxY: 0,
+            wallpaperParallax: { transform: 'translate3d(0px, 0px, 0px)' }
         };
     },
     computed: {
@@ -470,7 +591,7 @@ createApp({
             ];
             
             // Auto-update active section based on scroll position
-            const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+            const sections = ['home', 'about', 'skills', 'projects', 'certificates', 'contact'];
             const scrollPosition = window.scrollY + 200;
             
             for (const section of sections) {
@@ -497,6 +618,17 @@ createApp({
             this.playSFX('success');
             this.formData = { name: '', email: '', message: '' };
             setTimeout(() => { this.notification.show = false; }, 3000);
+        },
+        openCertificate(cert) {
+            this.certificateModal.cert = cert;
+            this.certificateModal.show = true;
+            this.playSFX('click');
+            document.body.style.overflow = 'hidden';
+        },
+        closeCertificate() {
+            this.certificateModal.show = false;
+            this.playSFX('click');
+            document.body.style.overflow = 'auto';
         },
         createCursorTrail(e) {
             const trail = document.createElement('div');
@@ -550,12 +682,71 @@ createApp({
             setTimeout(() => {
                 document.querySelectorAll('.skill-card').forEach(card => skillObserver.observe(card));
             }, 100);
+        },
+        // iOS 26 Dynamic Clock
+        updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            this.currentTime = `${hours}:${minutes}`;
+            
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const dayName = days[now.getDay()];
+            const monthName = months[now.getMonth()];
+            const date = now.getDate();
+            this.currentDate = `${dayName}, ${monthName} ${date}`;
+        },
+        // iOS 26 3D Parallax - Mouse Movement
+        handleParallax(e) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            this.parallaxX = (e.clientX - centerX) / centerX;
+            this.parallaxY = (e.clientY - centerY) / centerY;
+            
+            const moveX = this.parallaxX * 20;
+            const moveY = this.parallaxY * 20;
+            
+            this.wallpaperParallax = {
+                transform: `translate3d(${moveX}px, ${moveY}px, 0px) scale(1.1)`
+            };
+        },
+        // iOS 26 3D Parallax - Gyroscope/Device Orientation
+        handleGyroscope(e) {
+            if (e.beta !== null && e.gamma !== null) {
+                const tiltX = e.gamma / 45; // -1 to 1
+                const tiltY = e.beta / 45; // -1 to 1
+                
+                const moveX = tiltX * 30;
+                const moveY = tiltY * 30;
+                
+                this.wallpaperParallax = {
+                    transform: `translate3d(${moveX}px, ${moveY}px, 0px) scale(1.1)`
+                };
+            }
+        },
+        // Initialize iOS 26 3D Parallax
+        init3DParallax() {
+            // Mouse parallax for desktop
+            window.addEventListener('mousemove', this.handleParallax);
+            
+            // Gyroscope parallax for mobile
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', this.handleGyroscope);
+            }
         }
     },
     mounted() {
         if (this.$refs.backgroundMusic) {
             this.$refs.backgroundMusic.volume = 0.3;
         }
+        
+        // iOS 26 Features Initialization
+        this.updateClock();
+        setInterval(this.updateClock, 1000);
+        this.init3DParallax();
+        
         window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('mousemove', this.createCursorTrail);
         document.addEventListener('click', (e) => {
@@ -569,7 +760,7 @@ createApp({
             document.body.style.transition = 'opacity 0.5s ease';
             document.body.style.opacity = '1';
         }, 100);
-        console.log('🎨 Vue Portfolio loaded!');
+        console.log('🎨 iOS 26 Portfolio loaded with dynamic features!');
     },
     unmounted() {
         window.removeEventListener('scroll', this.handleScroll);

@@ -1534,28 +1534,39 @@ body {
     font-size: 14px;
   }
   
-  /* Floating Dock */
+  /* Floating Dock - Mobile Optimized */
   .floating-dock {
-    bottom: 15px;
-    padding: 6px;
-    gap: 3px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: calc(100vw - 20px);
+    padding: 8px 6px;
+    gap: 4px;
+    transform: translateX(0);
+    justify-content: space-between;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
-  .dock-item {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  
-  .dock-item i {
-    font-size: 14px;
-  }
-  
-  .dock-item span {
+  .floating-dock::-webkit-scrollbar {
     display: none;
   }
   
-  .dock-item.active span {
-    display: inline;
+  .dock-item {
+    padding: 10px;
+    font-size: 11px;
+    min-width: 44px;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+  
+  .dock-item i {
+    font-size: 18px;
+  }
+  
+  .dock-item span {
+    display: none !important;
   }
 }
 

@@ -168,27 +168,30 @@ body {
   color: var(--primary);
 }
 
-/* Mobile Clock Widget - Horizontal Rectangle */
+/* Mobile Clock Widget - Horizontal Rectangle with Audio Controls */
 @media (max-width: 768px) {
   .ios-clock-widget {
     top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 10px;
+    right: 10px;
+    transform: none;
     padding: 0.5rem 0.75rem;
     flex-direction: row;
     gap: 0.75rem;
     border-radius: 12px;
     min-width: auto;
     align-items: center;
+    justify-content: space-between;
+    max-width: calc(100vw - 20px);
   }
   
   .ios-clock-widget:hover {
-    transform: translateX(-50%) translateY(-2px);
+    transform: translateY(-2px);
   }
   
   .clock-time {
-    font-size: 0.9rem;
-    padding-right: 0.75rem;
+    font-size: 0.85rem;
+    padding-right: 0.5rem;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     border-bottom: none;
     padding-bottom: 0;
@@ -197,19 +200,60 @@ body {
   }
   
   .clock-date {
-    font-size: 0.65rem;
-    padding-right: 0.75rem;
+    font-size: 0.6rem;
+    padding-right: 0.5rem;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     white-space: nowrap;
+    display: none;
   }
   
   .clock-location {
     font-size: 0.6rem;
     white-space: nowrap;
+    flex: 1;
+    min-width: 0;
   }
   
   .clock-location i {
     font-size: 0.65rem;
+  }
+  
+  /* Integrate Audio Control into Clock Widget on Mobile */
+  .audio-control {
+    position: static;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .audio-main-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    border-radius: 8px;
+    position: static;
+  }
+  
+  .audio-control-menu {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  
+  .audio-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    border-radius: 8px;
   }
 }
 
@@ -1520,47 +1564,3 @@ body {
     top: 15px;
     right: 10px;
     gap: 8px;
-  }
-  
-  .audio-main-toggle {
-    width: 45px;
-    height: 45px;
-    font-size: 16px;
-  }
-  
-  .audio-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 14px;
-  }
-  
-  /* Floating Dock */
-  .floating-dock {
-    bottom: 15px;
-    padding: 6px;
-    gap: 3px;
-  }
-  
-  .dock-item {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  
-  .dock-item i {
-    font-size: 14px;
-  }
-  
-  .dock-item span {
-    display: none;
-  }
-  
-  .dock-item.active span {
-    display: inline;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-title { font-size: 2rem; }
-  .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
-  .section-title { font-size: 1.8rem; }
-}

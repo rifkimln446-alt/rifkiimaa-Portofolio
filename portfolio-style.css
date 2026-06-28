@@ -168,18 +168,195 @@ body {
   color: var(--primary);
 }
 
+/* Clock Position Button */
+.clock-position-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  z-index: 10;
+}
+
+.clock-position-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--primary);
+  transform: rotate(90deg);
+}
+
+/* Position Selector Modal */
+.position-selector-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease;
+}
+
+.position-selector-content {
+  background: var(--dark-card);
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 90vw;
+  width: 400px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.3s ease;
+}
+
+.position-selector-content h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.position-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.position-grid button {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.position-grid button i {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.position-grid button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.position-grid button.active {
+  background: var(--gradient-main);
+  border-color: var(--primary);
+  color: black;
+  font-weight: 600;
+}
+
+.position-grid button.active i {
+  color: black;
+}
+
+.close-selector-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.close-selector-btn:hover {
+  background: var(--primary);
+  color: black;
+  border-color: var(--primary);
+}
+
 /* Mobile Clock Widget */
 @media (max-width: 768px) {
+  .clock-position-btn {
+    display: flex;
+  }
+  
   .ios-clock-widget {
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
     padding: 0.75rem 1.25rem;
     flex-direction: column;
     gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  /* Clock Position Variants - Mobile */
+  .ios-clock-widget.clock-position-top-left {
+    top: 15px;
+    left: 15px;
+    right: auto;
+    bottom: auto;
+    transform: none;
+  }
+  
+  .ios-clock-widget.clock-position-top-center {
+    top: 15px;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translateX(-50%);
+  }
+  
+  .ios-clock-widget.clock-position-top-right {
+    top: 15px;
+    left: auto;
+    right: 15px;
+    bottom: auto;
+    transform: none;
+  }
+  
+  .ios-clock-widget.clock-position-bottom-left {
+    top: auto;
+    left: 15px;
+    right: auto;
+    bottom: 100px;
+    transform: none;
+  }
+  
+  .ios-clock-widget.clock-position-bottom-center {
+    top: auto;
+    left: 50%;
+    right: auto;
+    bottom: 100px;
+    transform: translateX(-50%);
+  }
+  
+  .ios-clock-widget.clock-position-bottom-right {
+    top: auto;
+    left: auto;
+    right: 15px;
+    bottom: 100px;
+    transform: none;
   }
   
   .ios-clock-widget:hover {
+    transform: translateY(-2px);
+  }
+  
+  .ios-clock-widget.clock-position-top-center:hover,
+  .ios-clock-widget.clock-position-bottom-center:hover {
     transform: translateX(-50%) translateY(-2px);
   }
   

@@ -173,7 +173,7 @@ body {
   .ios-clock-widget {
     top: 15px;
     left: 10px;
-    right: auto;
+    right: 10px;
     transform: none;
     padding: 0.5rem 0.75rem;
     flex-direction: row;

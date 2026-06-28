@@ -18,49 +18,12 @@
         </div>
 
         <!-- iOS 26 Dynamic Clock Widget -->
-        <div class="ios-clock-widget" :class="'clock-position-' + clockPosition">
-            <button class="clock-position-btn" @click="showPositionSelector = true" title="Change Position">
-                <i class="fas fa-arrows-up-down-left-right"></i>
-            </button>
+        <div class="ios-clock-widget">
             <div class="clock-time">{{ currentTime }}</div>
             <div class="clock-date">{{ currentDate }}</div>
             <div class="clock-location">
                 <i class="fas fa-location-dot"></i>
                 {{ currentLocation }}
-            </div>
-        </div>
-
-        <!-- Clock Position Selector Modal (Mobile Only) -->
-        <div v-if="showPositionSelector" class="position-selector-modal" @click="showPositionSelector = false">
-            <div class="position-selector-content" @click.stop>
-                <h3>📍 Choose Clock Position</h3>
-                <div class="position-grid">
-                    <button @click="setClockPosition('top-left')" :class="{active: clockPosition === 'top-left'}">
-                        <i class="fas fa-arrow-up-left"></i>
-                        <span>Top Left</span>
-                    </button>
-                    <button @click="setClockPosition('top-center')" :class="{active: clockPosition === 'top-center'}">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>Top Center</span>
-                    </button>
-                    <button @click="setClockPosition('top-right')" :class="{active: clockPosition === 'top-right'}">
-                        <i class="fas fa-arrow-up-right"></i>
-                        <span>Top Right</span>
-                    </button>
-                    <button @click="setClockPosition('bottom-left')" :class="{active: clockPosition === 'bottom-left'}">
-                        <i class="fas fa-arrow-down-left"></i>
-                        <span>Bottom Left</span>
-                    </button>
-                    <button @click="setClockPosition('bottom-center')" :class="{active: clockPosition === 'bottom-center'}">
-                        <i class="fas fa-arrow-down"></i>
-                        <span>Bottom Center</span>
-                    </button>
-                    <button @click="setClockPosition('bottom-right')" :class="{active: clockPosition === 'bottom-right'}">
-                        <i class="fas fa-arrow-down-right"></i>
-                        <span>Bottom Right</span>
-                    </button>
-                </div>
-                <button class="close-selector-btn" @click="showPositionSelector = false">Close</button>
             </div>
         </div>
 
@@ -549,10 +512,7 @@ createApp({
             currentLocation: 'Karawang, West Java',
             parallaxX: 0,
             parallaxY: 0,
-            wallpaperParallax: { transform: 'translate3d(0px, 0px, 0px)' },
-            // Clock Position Feature
-            clockPosition: localStorage.getItem('clock-position') || 'top-center',
-            showPositionSelector: false
+            wallpaperParallax: { transform: 'translate3d(0px, 0px, 0px)' }
         };
     },
     computed: {
@@ -775,13 +735,6 @@ createApp({
             if (window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientation', this.handleGyroscope);
             }
-        },
-        // Clock Position Selector
-        setClockPosition(position) {
-            this.clockPosition = position;
-            localStorage.setItem('clock-position', position);
-            this.showPositionSelector = false;
-            this.playSFX('click');
         }
     },
     mounted() {

@@ -101,7 +101,7 @@ body {
 .ios-clock-widget {
   position: fixed;
   top: 30px;
-  left: 50%;
+  left: 26.5%;
   transform: translateX(-50%);
   z-index: 9998;
   padding: 1rem 2rem;
@@ -1564,3 +1564,47 @@ body {
     top: 15px;
     right: 10px;
     gap: 8px;
+  }
+  
+  .audio-main-toggle {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+  
+  .audio-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  /* Floating Dock */
+  .floating-dock {
+    bottom: 15px;
+    padding: 6px;
+    gap: 3px;
+  }
+  
+  .dock-item {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .dock-item i {
+    font-size: 14px;
+  }
+  
+  .dock-item span {
+    display: none;
+  }
+  
+  .dock-item.active span {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 2rem; }
+  .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+  .section-title { font-size: 1.8rem; }
+}

@@ -216,7 +216,7 @@ body {
 /* ============ Audio Controls ============ */
 .audio-control {
   position: fixed;
-  top: 100px;
+  top: 20px;
   right: 20px;
   z-index: 9999;
   display: flex;
@@ -1517,7 +1517,7 @@ body {
   
   /* Audio Control */
   .audio-control {
-    top: 15px;
+    top: 30px;
     right: 10px;
     gap: 8px;
   }
